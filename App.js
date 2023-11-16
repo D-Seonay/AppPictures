@@ -1,20 +1,32 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+
+import React, { useState } from 'react';
+import { View, Text } from 'react-native';
+import Search from './components/Search';
+import ImageItem from './components/ImageItem';
+import GetPictures  from './components/pixabay';
 
 export default function App() {
+  const [results, setResults] = useState([]);
+
+  const handleSearch = async (query) => {
+    const data = await GetPictures(query);
+    setResults(data.hits);
+  };
+
+  const renderResults = () => {
+    return results.map((result) => (
+      <ImageItem key={result.id} image={result} />
+    ));
+  };
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
+    <View>
+      <Search onSearch={handleSearch} />
+      {results.length > 0 ? (
+        renderResults()
+      ) : (
+        <Text>No results found</Text>
+      )}
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
