@@ -1,26 +1,42 @@
 // ./components/Search.js
-import React from 'react';
-import { StyleSheet, View, TextInput, Button, FlatList, Text } from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, View, TextInput, Button, FlatList, Text} from 'react-native';
 import Imageitem from './ImageItem';
+import GetPictures from './pixabay';
 export default function Search() {
-    return (
-    <View style={styles.container}>
-    <TextInput style={styles.textinput} placeholder="Mot clef " />
-    <Button title="Rechercher" />
-    <FlatList
-    data={[{ key: 'a' }, { key: 'b' }]}
-    renderItem={({ item }) => <Imageitem />}
-    />
-    </View>
-    );
+ const [motrecherche, setMotrecherche] = useState();
+ const [data_img, setData_img] = useState();
+ return (
+ <View style={styles.container}>
+ <TextInput
+ onChangeText={(text) => setMotrecherche(text)}
+ value={motrecherche}
+ style={styles.textinput}
+ PlaceHolder="Mots Clefs"
+ />
+ <Button
+ title="Rechercher"
+ onPress={() => {
+ GetPictures(motrecherche).then((rep) => {
+ setData_img(rep.hits);
+ });
+ }}
+ />
+ <FlatList
+ data={data_img}
+ keyExtractor={(item) => item.id.toString()}
+ renderItem={({ item }) => <Imageitem image={item} />}
+ />
+ </View>
+ );
 }
 const styles = StyleSheet.create({
-    container: {
-    marginTop: 20,
-    },
-    textinput: {
-    borderWidth: 1,
-    marginLeft: 5,
-    marginRight: 5,
-    },
+ container: {
+ marginTop: 20,
+ },
+ textinput: {
+ borderWidth: 1,
+ marginLeft: 5,
+ marginRight: 5,
+ },
 });
