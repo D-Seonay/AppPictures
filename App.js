@@ -1,17 +1,11 @@
-import React, { useState } from 'react';
+// Search.js
+import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import Search from './components/Search'
-import Nav from './NAV/nav'
-import { listeFav } from './components/AppContext';
-
+import Nav from './NAV/Nav.js'
 export default function App() {
-  const [myFav,setmyFav] = useState([]);
-
-  return (
-    <listeFav.Provider value={[myFav,setmyFav]}>
-      <Nav />
-    </listeFav.Provider>
-  );
+return (
+  <Nav />
+);
 }
 
 const styles = StyleSheet.create({
